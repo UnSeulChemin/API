@@ -3,37 +3,38 @@
 // Headers requis
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: DELETE");
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// On vérifie que la méthode utilisée est correcte
-if($_SERVER['REQUEST_METHOD'] == 'DELETE')
+// On vérifie la méthode
+if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
-    // On inclut les fichiers de configuration et d'accès aux données
     include_once '../config/Database.php';
     include_once '../models/Utilisateurs.php';
 
-    // On instancie la base de données
     $database = new Database();
     $dbh = $database->getConnection();
 
-    // On instancie les utilisateurs
     $utilisateur = new Utilisateurs($dbh);
 
-    // On récupère l'id du utilisateur
+    // On récupère les informations envoyées
     $donnees = json_decode(file_get_contents("php://input"));
-
-    if(!empty($donnees->id))
+    
+    if(!empty($donnees->email) && !empty($donnees->username) && !empty($donnees->password))
     {
-        $utilisateur->id = $donnees->id;
+        // Ici on a reçu les données
+        // On hydrate notre objet
+        $utilisateur->email = $donnees->email;
+        $utilisateur->username = $donnees->username;
+        $utilisateur->password = $donnees->password;
 
-        if($utilisateur->supprimer())
+        if($utilisateur->ajouter())
         {
-            // Ici la suppression a fonctionné
-            // On envoie un code 200
-            http_response_code(200);
-            echo json_encode(["message" => "La suppression a été effectuée"]);
+            // Ici la création a fonctionné
+            // On envoie un code 201
+            http_response_code(201);
+            echo json_encode(["message" => "L'ajout a été effectué"]);
         }
         
         else
@@ -41,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'DELETE')
             // Ici la création n'a pas fonctionné
             // On envoie un code 503
             http_response_code(503);
-            echo json_encode(["message" => "La suppression n'a pas été effectuée"]);         
+            echo json_encode(["message" => "L'ajout n'a pas été effectué"]);         
         }
     }
 }

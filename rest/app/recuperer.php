@@ -10,15 +10,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // On vérifie que la méthode utilisée est correcte
 if($_SERVER['REQUEST_METHOD'] == 'GET')
 {
-    // On inclut les fichiers de configuration et d'accès aux données
     include_once '../config/Database.php';
     include_once '../models/Utilisateurs.php';
 
-    // On instancie la base de données
     $database = new Database();
     $dbh = $database->getConnection();
 
-    // On instancie les utilisateurs
     $utilisateur = new Utilisateurs($dbh);
 
     // On récupère les données
@@ -38,13 +35,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
 
             $prod =[
                 "id" => $id,
-                "avatar" => $avatar,
-                "nom" => $nom,
-                "mdp" => $mdp,
                 "email" => $email,
-                "sexe" => $sexe,
-                "niveau" => $niveau,
-                "experience" => $experience               
+                "username" => $username,
+                "password" => $password        
             ];
 
             $tableauUtilisateurs['utilisateurs'][] = $prod;
@@ -59,7 +52,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
 }
 else
 {
-    // On gère l'erreur
     http_response_code(405);
     echo json_encode(["message" => "La méthode n'est pas autorisée"]);
 }

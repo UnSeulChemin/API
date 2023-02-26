@@ -10,15 +10,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // On vérifie que la méthode utilisée est correcte
 if($_SERVER['REQUEST_METHOD'] == 'GET')
 {
-    // On inclut les fichiers de configuration et d'accès aux données
     include_once '../config/Database.php';
     include_once '../models/Utilisateurs.php';
 
-    // On instancie la base de données
     $database = new Database();
     $dbh = $database->getConnection();
 
-    // On instancie les utilisateurs
     $utilisateur = new Utilisateurs($dbh);
 
     $donnees = json_decode(file_get_contents("php://input"));
@@ -31,17 +28,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
         $utilisateur->recupererUn();
 
         // On vérifie si le utilisateur existe
-        if($utilisateur->nom != null)
+        if($utilisateur->username != null)
         {
             $prod = [
                 "id" => $utilisateur->id,
-                "avatar" => $utilisateur->avatar,
-                "nom" => $utilisateur->nom,
-                "mdp" => $utilisateur->mdp,
                 "email" => $utilisateur->email,
-                "sexe" => $utilisateur->sexe,
-                "niveau" => $utilisateur->niveau,
-                "experience" => $utilisateur->experience
+                "username" => $utilisateur->username,
+                "password" => $utilisateur->password,
             ];
 
             // On envoie le code réponse 200 OK
@@ -53,9 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
         
         else
         {
-            // 404 Not found
             http_response_code(404);
-         
             echo json_encode(array("message" => "L'utilisateur n'existe pas."));
         }
     }
@@ -63,7 +54,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
 
 else
 {
-    // On gère l'erreur
     http_response_code(405);
     echo json_encode(["message" => "La méthode n'est pas autorisée"]);
 }
