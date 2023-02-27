@@ -12,9 +12,9 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT')
     include_once '../models/Utilisateurs.php';
 
     $database = new Database();
-    $dbh = $database->getConnection();
+    $db = $database->getConnection();
 
-    $utilisateur = new Utilisateurs($dbh);
+    $utilisateur = new Utilisateurs($db);
 
     // On récupère les informations envoyées
     $donnees = json_decode(file_get_contents("php://input"));
