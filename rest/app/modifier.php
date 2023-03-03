@@ -21,7 +21,6 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT')
     
     if(!empty($donnees->email) && !empty($donnees->username) && !empty($donnees->password))
     {
-        // Ici on a reçu les données
         // On hydrate notre objet
         $utilisateur->id = $donnees->id;
         $utilisateur->email = $donnees->email;
@@ -30,16 +29,12 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT')
 
         if($utilisateur->modifier())
         {
-            // Ici la modification a fonctionné
-            // On envoie un code 200
             http_response_code(200);
             echo json_encode(["message" => "La modification a été effectuée"]);
         }
         
         else
         {
-            // Ici la création n'a pas fonctionné
-            // On envoie un code 503
             http_response_code(503);
             echo json_encode(["message" => "La modification n'a pas été effectuée"]);         
         }
@@ -48,7 +43,6 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT')
 
 else
 {
-    // On gère l'erreur
     http_response_code(405);
     echo json_encode(["message" => "La méthode n'est pas autorisée"]);
 }

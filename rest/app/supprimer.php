@@ -1,6 +1,5 @@
 <?php
 
-// Headers requis
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: DELETE");
@@ -26,16 +25,12 @@ if($_SERVER['REQUEST_METHOD'] == 'DELETE')
 
         if($utilisateur->supprimer())
         {
-            // Ici la suppression a fonctionné
-            // On envoie un code 200
             http_response_code(200);
             echo json_encode(["message" => "La suppression a été effectuée"]);
         }
         
         else
         {
-            // Ici la création n'a pas fonctionné
-            // On envoie un code 503
             http_response_code(503);
             echo json_encode(["message" => "La suppression n'a pas été effectuée"]);         
         }
@@ -44,7 +39,6 @@ if($_SERVER['REQUEST_METHOD'] == 'DELETE')
 
 else
 {
-    // On gère l'erreur
     http_response_code(405);
     echo json_encode(["message" => "La méthode n'est pas autorisée"]);
 }

@@ -27,12 +27,11 @@ class Utilisateurs
     public function recupererUn()
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE id = ? LIMIT 0,1";
-        $query = $this->connexion->prepare( $sql );
+        $query = $this->connexion->prepare($sql);
+
         // On attache l'id
         $query->bindParam(1, $this->id);
         $query->execute();
-
-        // on récupère la ligne
         $row = $query->fetch(PDO::FETCH_ASSOC);
 
         // On hydrate l'objet
@@ -43,10 +42,7 @@ class Utilisateurs
 
     public function ajouter()
     {
-        // Ecriture de la requête SQL en y insérant le nom de la table
         $sql = "INSERT INTO " . $this->table . " SET email = :email, username = :username, password = :password ";
-
-        // Préparation de la requête
         $query = $this->connexion->prepare($sql);
 
         // Protection contre les injections
@@ -59,7 +55,6 @@ class Utilisateurs
         $query->bindParam(":username", $this->username);
         $query->bindParam(":password", $this->password);
 
-        // Exécution de la requête
         if($query->execute())
         {
             return true;
@@ -70,10 +65,7 @@ class Utilisateurs
 
     public function supprimer()
     {
-        // On écrit la requête
         $sql = "DELETE FROM " . $this->table . " WHERE id = ?";
-
-        // On prépare la requête
         $query = $this->connexion->prepare( $sql );
 
         // On sécurise les données
@@ -82,7 +74,6 @@ class Utilisateurs
         // On attache l'id
         $query->bindParam(1, $this->id);
 
-        // On exécute la requête
         if($query->execute())
         {
             return true;
@@ -107,8 +98,7 @@ class Utilisateurs
         $query->bindParam(":email", $this->email);
         $query->bindParam(":username", $this->username);
         $query->bindParam(":password", $this->password);     
-        
-        // On exécute
+
         if($query->execute())
         {
             return true;

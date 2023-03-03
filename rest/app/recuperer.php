@@ -41,10 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
             $tableauUtilisateurs['utilisateurs'][] = $prod;
         }
 
-        // On envoie le code réponse 200 OK
         http_response_code(200);
-
-        // On encode en json et on envoie
         echo json_encode($tableauUtilisateurs);
     }
 }
